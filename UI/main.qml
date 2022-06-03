@@ -16,7 +16,7 @@ ApplicationWindow {
     property int searchWin: 21;
     property int templateWin: 7;
     property int colorStr: 10;
-    
+
     Timer{
         id: timer;
         interval: 200;
@@ -89,75 +89,75 @@ ApplicationWindow {
             }
         }
 
-        // // ---- PlusSign ----
-        // Rectangle {
-        //     id: plusSignRec;
-        //     color: "Transparent";
-        //     width: cubeImage - 25;
-        //     height: cubeImage - 25;
-        //     anchors{
-        //         top: lennaOriRec.bottom
-        //         topMargin: 5
-        //         // bottom: noiseImg.source = "top;
-        //         // bottomMargin: 80
-        //         left: parent.left
-        //         leftMargin: lineTab + 15
-        //     }
+        // ---- PlusSign ----
+        Rectangle {
+            id: plusSignRec;
+            color: "Transparent";
+            width: cubeImage - 25;
+            height: cubeImage - 25;
+            anchors{
+                top: lennaOriRec.bottom
+                topMargin: 5
+                // bottom: noiseImg.source = "top;
+                // bottomMargin: 80
+                left: parent.left
+                leftMargin: lineTab + 15
+            }
 
-        //     // ---- PlusSign Image ----
-        //     Image {
-        //         source: "./images/plus_icon.png"
-        //         sourceSize.width: parent.width
-        //         sourceSize.height: parent.height
-        //         fillMode: Image.PreserveAspectCrop
-        //     }
-        // }
+            // ---- PlusSign Image ----
+            Image {
+                source: "./images/plus_icon.png"
+                sourceSize.width: parent.width
+                sourceSize.height: parent.height
+                fillMode: Image.PreserveAspectCrop
+            }
+        }
 
-        // // ---- Noise Image ----
-        // Rectangle {
-        //     id: noiseRect;
-        //     color: "Transparent";
-        //     width: cubeImage;
-        //     height: cubeImage;
-        //     anchors{
-        //         top: plusSignRec.bottom
-        //         topMargin: 5
-        //         left: parent.left
-        //         leftMargin: lineTab
-        //     }
+        // ---- Noise Image ----
+        Rectangle {
+            id: noiseRect;
+            color: "Transparent";
+            width: cubeImage;
+            height: cubeImage;
+            anchors{
+                top: plusSignRec.bottom
+                topMargin: 5
+                left: parent.left
+                leftMargin: lineTab
+            }
 
-        //     // ---- Noise Image ----
-        //     Image {
+            // ---- Noise Image ----
+            Image {
 
-        //         id: noiseImg;
+                id: noiseImg;
 
-        //         source: "./images/Noise.png"
-        //         sourceSize.width: parent.width
-        //         sourceSize.height: parent.height
-        //         cache: false;
-        //         fillMode: Image.PreserveAspectCrop
+                source: "./images/Noise.png"
+                sourceSize.width: parent.width
+                sourceSize.height: parent.height
+                cache: false;
+                fillMode: Image.PreserveAspectCrop
 
-        //         function reloadImage(){
-        //             if(source == "./images/Noise.png"){
-        //                 source = "./images/Noise1.png"
-        //             }else{
-        //                 source = "./images/Noise.png"
-        //             }
+                function reloadImage(){
+                    if(source == "./images/Noise.png"){
+                        source = "./images/Noise1.png"
+                    }else{
+                        source = "./images/Noise.png"
+                    }
 
-        //         }
-        //     }
+                }
+            }
 
-        //     // ---- Noise Label ----
-        //     Text {
-        //         text: "Ruido"
-        //         font.pixelSize: 20
-        //         color: "White"
-        //         anchors.fill: parent
-        //         anchors.horizontalCenter: parent.horizontalCenter
-        //         anchors.verticalCenter: parent.top
-        //     }
+            // ---- Noise Label ----
+            Text {
+                text: "Ruido"
+                font.pixelSize: 20
+                color: "White"
+                anchors.fill: parent
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.top
+            }
 
-        // }
+        }
 
 
         Column{
@@ -200,7 +200,7 @@ ApplicationWindow {
                 left: parent.left
                 leftMargin: lineTab
             }
-            
+
             Label{
                 text: "Variação de Ruído"
                 font.pixelSize: 18
@@ -269,16 +269,16 @@ ApplicationWindow {
             Image {
                 id: lennaResultImg;
                 cache: false;
-                source: "./images/FloydSteinberg.png"
+                source: "./images/LennaResult.png"
                 sourceSize.width: parent.width
                 sourceSize.height: parent.height
                 fillMode: Image.PreserveAspectCrop
 
                 function reloadImage(){
-                    if(source == "./imagesFloydSteinberg.png"){
-                        source = "./images/FloydSteinberg1.png"
+                    if(source == "./images/LennaResult.png"){
+                        source = "./images/LennaResult1.png"
                     }else{
-                        source = "./imagesFloydSteinberg.png"
+                        source = "./images/LennaResult.png"
                     }
 
                 }
@@ -293,7 +293,7 @@ ApplicationWindow {
                 anchors.verticalCenter: parent.top
             }
         }
-        
+
         Column {
             id: filterStrText
 
@@ -311,7 +311,7 @@ ApplicationWindow {
             }
 
             TextField {
-                
+
                 validator: DoubleValidator;
                 placeholderText: qsTr("Insira a força do filtro");
                 // text: "test"
@@ -337,7 +337,7 @@ ApplicationWindow {
                 left: parent.left
                 leftMargin: lineTab
             }
-            
+
             Label{
                 text: "Janela de Busca"
                 font.pixelSize: 18
@@ -345,7 +345,7 @@ ApplicationWindow {
             }
 
             TextField {
-                
+
                 validator: DoubleValidator;
                 placeholderText: qsTr("Insira Tamanho da Janela de Busca");
                 // text: "test"
@@ -364,7 +364,7 @@ ApplicationWindow {
                     // background.color = "Red"
                 }
             }
-        
+
         }
 
         Column{
@@ -375,7 +375,7 @@ ApplicationWindow {
                 left: parent.left
                 leftMargin: lineTab
             }
-            
+
             Label{
                 text: "Media para Pesos"
                 font.pixelSize: 18
@@ -383,7 +383,7 @@ ApplicationWindow {
             }
 
             TextField {
-                
+
                 validator: DoubleValidator;
                 placeholderText: qsTr("Insira a quantidade de pixels para pesos");
                 // text: "test"
@@ -409,7 +409,7 @@ ApplicationWindow {
                 left: parent.left
                 leftMargin: lineTab
             }
-            
+
             Label{
                 text: "Força do Filtro de Cor"
                 font.pixelSize: 18
@@ -417,8 +417,8 @@ ApplicationWindow {
             }
 
             TextField {
-                
-                
+
+
                 validator: DoubleValidator;
                 placeholderText: qsTr("Insira a força do filtro de cores");
                 // text: "test"
@@ -437,7 +437,7 @@ ApplicationWindow {
             }
         }
 
-        
+
     }
 
     // ---- Line ----

@@ -39,7 +39,12 @@ class NoiseGenerator:
         # cv2.imwrite('./UI/images/lennaGray.png', image)
 
         arr = np.array(image, dtype=float)
-        height, width, ch = arr.shape
+        if(len(arr.shape) == 2):
+            height, width = arr.shape
+            ch = 1
+        else:
+            height, width, ch = arr.shape
+
         for y in range(height):
             for x in range(width):
                 old_pixel = arr[y, x]
@@ -48,29 +53,49 @@ class NoiseGenerator:
                 for i in range(ch):
                     # Encontra um novo valor para o pixel
                     new_pixel = self.find_closest_color(
-                        old_pixel[i], qnt_colors)
+                        old_pixel[i] if ch > 1 else old_pixel, qnt_colors)
 
-                    arr[y, x, i] = new_pixel
+                    if(ch > 1):
+                        arr[y, x, i] = new_pixel
+                    else:
+                        arr[y, x] = new_pixel
+
                     # Retira o erro de quantização para cada pixel
-                    quant_error = old_pixel[i] - new_pixel
+                    quant_error = old_pixel[i] if ch > 1 else old_pixel - new_pixel
 
                     if x + 1 < width:
-                        image[y, x + 1, i] += quant_error * \
-                            0.4375  # right, 7 / 16
+                        pointer = image[y, x + 1,
+                                        i] if ch > 1 else image[y, x + 1]
+
+                        # right, 7 / 16
+                        pointer += self.quant_error(quant_error, 0.4375)
                     if (y + 1 < height) and (x + 1 < width):
-                        image[y + 1, x + 1, i] += quant_error * \
-                            0.0625  # right, down, 1 / 16
+                        pointer = image[y + 1, x + 1,
+                                        i] if ch > 1 else image[y + 1, x + 1]
+
+                        # right, down, 1 / 16
+                        pointer += self.quant_error(quant_error, 0.0625)
                     if y + 1 < height:
-                        image[y + 1, x, i] += quant_error * \
-                            0.3125  # down, 5 / 16
+                        pointer = image[y + 1, x,
+                                        i] if ch > 1 else image[y + 1, x]
+
+                        # down, 5 / 16
+                        pointer += self.quant_error(quant_error, 0.3125)
                     if (x - 1 >= 0) and (y + 1 < height):
-                        image[y + 1, x - 1, i] += quant_error * \
-                            0.1875  # left, down, 3 / 16
+                        pointer = image[y + 1, x - 1,
+                                        i] if ch > 1 else image[y + 1, x - 1]
+
+                        # left, down, 3 / 16
+                        pointer += self.quant_error(quant_error, 0.1875)
 
         cv2.imwrite('./UI/images/FloydSteinberg.png', arr)
+        cv2.imwrite('./UI/images/FloydSteinberg1.png', arr)
 
     def find_closest_color(self, pixel, qnt_colors):
         return np.round(qnt_colors * pixel / 255) * (255 / qnt_colors)
+
+    def quant_error(self, quant_error, k):
+        return quant_error * k
 
     def gaussian_remove(self, filterStr=10, searchWin=21, templateWin=7, colorStr=10):
         lennaResult = cv2.imread('./UI/images/LennaResult.png')
@@ -97,10 +122,10 @@ class Backend(QObject):
 
     @pyqtSlot(float, float)
     def onMediaUpdate(self, media=0.0, variacao=0.2):
-        print(media, variacao)
+        print(media)
         global gen
         # gen.gaussian_noise(media, variacao)
-        gen.floyd_steinberg_dither()
+        gen.floyd_steinberg_dither(media)
 
     @pyqtSlot(int, int, int, int)
     def onFilterUpdate(self, filterStr=10, searchWin=21, templateWin=7, colorStr=10):
@@ -131,7 +156,7 @@ curr_time = strftime("%H:%M:%S", localtime())
 def init_qml():
     engine = QQmlApplicationEngine()
     engine.quit.connect(app.quit)
-    engine.load('./UI/main.qml')
+    engine.load('./UI/floyd.qml')
     back_end = Backend()
     print(engine.rootObjects())
     engine.rootObjects()[0].setProperty('backend', back_end)
@@ -143,5 +168,5 @@ def init_qml():
 
 # gen.gaussian_noise(0, 0.2)
 # gen.gaussian_remove()
-gen.floyd_steinberg_dither(2)
-# init_qml()
+# gen.floyd_steinberg_dither(4)
+init_qml()
